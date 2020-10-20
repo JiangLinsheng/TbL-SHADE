@@ -1,8 +1,10 @@
+% Copyright (c) 2020, Linsheng Jiang
+% All rights reserved.
 clear all
 %setenv('MW_MINGW64_LOC','E:\mingw-w64\x86_64-5.3.0-posix-seh-rt_v4-rev0\mingw64');
 clc
 %mex cec20_func.cpp -DWINDOWS
-D=5;%Î¬¶È
+D=5;%ç»´åº¦
 Xmin=-100;
 Xmax=100;
 pop_size=100;
@@ -17,17 +19,17 @@ switch D
     case 20
         EFS=10000000;
     otherwise
-        a='Î¬¶È²»´æÔÚ';
+        a='ç»´åº¦ä¸å­˜åœ¨';
         fprintf('%s',a);
 end
 fhd=str2func('cec20_func');
 
 TbL_SHADE_D5=zeros(16,runs,10);
-TbL_SHADE_D5_result=zeros(10,5);%´æ´¢Ã¿´ÎÖØ¸´Ã¿¸öº¯ÊýµÄ×îÓÅÖµ
+TbL_SHADE_D5_result=zeros(10,5);%å­˜å‚¨æ¯æ¬¡é‡å¤æ¯ä¸ªå‡½æ•°çš„æœ€ä¼˜å€¼
 fbest=zeros(10,runs);
 pop_anay=zeros(runs,3,10);
-TbL_SHADE_anay_result_D5=zeros(10,3);%ÖÖÈº¾ÛÀàºÍÖÖÈºÃÜ¶È½á¹û
-for i=1:10%º¯ÊýÐòºÅ
+TbL_SHADE_anay_result_D5=zeros(10,3);%ç§ç¾¤èšç±»å’Œç§ç¾¤å¯†åº¦ç»“æžœ
+for i=1:10%å‡½æ•°åºå·
     func_num=i;
     for j=1:runs
         i,j,
@@ -42,7 +44,7 @@ for i=1:10%º¯ÊýÐòºÅ
 end
 for i=1:10
     temp_1=pop_anay(:,:,i);
-    a=sum(temp_1(:,1)==1);%³öÏÖ¾ÛÀàµÄÊµÑé´ÎÊý
+    a=sum(temp_1(:,1)==1);%å‡ºçŽ°èšç±»çš„å®žéªŒæ¬¡æ•°
     TbL_SHADE_anay_result_D5(i,1)=a;
     if(a>=1)
         temp_2=temp_1(temp_1(:,1)==1,:);
