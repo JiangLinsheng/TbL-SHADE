@@ -1,26 +1,28 @@
-%L-SHADE based on turning mutations
+%L-SHADE using turning-based mutation
+% Copyright (c) 2020, Linsheng Jiang
+% All rights reserved.
 function [g_best,error_value_1,pop_anay]=TbL_SHADE(fhd,D,pop_size,Xmin,Xmax,EFS,varargin)
 format long;
 rand('state',sum(100*clock));
-Np = pop_size;%ÖÖÈº´óĞ¡
+Np = pop_size;%ç§ç¾¤å¤§å°
 Np_init=pop_size;
 Np_min=4;
-xmin = Xmin;%×îĞ¡ÏÂ½ç
-xmax = Xmax;%×î´óÉÏ½ç
-value = zeros(1,Np);%ÊÊÓ¦¶ÈÖµ
-value_1=zeros(1,Np);%´æ´¢ÉÏÒ»´úµÄÊÊÓ¦¶ÈÖµ£¬ÒòÎªsortÅÅĞòÊ¹value¸Ä±äÁË
-pop_next_1=zeros(Np,D);%±äÒì½»²æºóµÄÖÖÈº
-pop_next=zeros(Np,D);%Ñ¡ÔñºóµÄÏÂÒ»´úÖÖÈº
+xmin = Xmin;%æœ€å°ä¸‹ç•Œ
+xmax = Xmax;%æœ€å¤§ä¸Šç•Œ
+value = zeros(1,Np);%é€‚åº”åº¦å€¼
+value_1=zeros(1,Np);%å­˜å‚¨ä¸Šä¸€ä»£çš„é€‚åº”åº¦å€¼ï¼Œå› ä¸ºsortæ’åºä½¿valueæ”¹å˜äº†
+pop_next_1=zeros(Np,D);%å˜å¼‚äº¤å‰åçš„ç§ç¾¤
+pop_next=zeros(Np,D);%é€‰æ‹©åçš„ä¸‹ä¸€ä»£ç§ç¾¤
 A=zeros(Np,D);
 A_pos=0;
-g=1;%µü´ú´ÎÊı
-efs=0;%ÊÊÓ¦¶ÈÆÀ¹À´ÎÊı
+g=1;%è¿­ä»£æ¬¡æ•°
+efs=0;%é€‚åº”åº¦è¯„ä¼°æ¬¡æ•°
 min_error=1000;
-error_value_1=zeros(16,1,1);%Í³¼ÆÊµÑé½á¹û
+error_value_1=zeros(16,1,1);%ç»Ÿè®¡å®éªŒç»“æœ
 memory_pos=1;
-k=0;%Í³¼ÆÊµÑé½á¹ûÓÃ
-optimum=[100,1100,700,1900,1700,1600,2100,2200,2400,2500];%Í³¼ÆÊµÑé½á¹ûÓÃ
-%ÖÖÈº¶àÑùĞÔ·ÖÎöÓÃ
+k=0;%ç»Ÿè®¡å®éªŒç»“æœç”¨
+optimum=[100,1100,700,1900,1700,1600,2100,2200,2400,2500];%ç»Ÿè®¡å®éªŒç»“æœç”¨
+%ç§ç¾¤å¤šæ ·æ€§åˆ†æç”¨
 pop_anay=zeros(1,3,1);
 epsilon=2;
 MinPts=4;
@@ -31,7 +33,7 @@ function y = f(pos)
         error_y=0;
         min_error=0;
     end
-    efs=efs+1;%ÊÊÓ¦¶ÈÆÀ¹À´ÎÊı¼ÓÒ»
+    efs=efs+1;%é€‚åº”åº¦è¯„ä¼°æ¬¡æ•°åŠ ä¸€
     if efs<=EFS
         spefs=round(power(D,(k/5-3))*EFS);
         if efs == spefs
@@ -41,9 +43,9 @@ function y = f(pos)
     end
 end
 
-%·´Ïò½ø»¯SHADE²ÎÊı
-distance_init=0;%³õÊ¼·´Ïò¾àÀë
-distance_min=0;%×îĞ¡·´Ïò¾àÀë
+%åå‘è¿›åŒ–SHADEå‚æ•°
+distance_init=0;%åˆå§‹åå‘è·ç¦»
+distance_min=0;%æœ€å°åå‘è·ç¦»
 for di=1:D
     distance_init=distance_init+power(100,2);
     distance_min=distance_min+power(5,2);
@@ -51,15 +53,15 @@ end
 distance_init=sqrt(distance_init);
 distance_min=sqrt(distance_min);
 
-pop=rand(Np,D)*(xmax-xmin)+xmin;%³õÊ¼»¯ÖÖÈº
-for m=1:Np%ÇóÊÊÓ¦¶ÈÖµ
+pop=rand(Np,D)*(xmax-xmin)+xmin;%åˆå§‹åŒ–ç§ç¾¤
+for m=1:Np%æ±‚é€‚åº”åº¦å€¼
     value(m)=f(pop(m,:));
 end
-g_best=min(value);%È«¾Ö×îÓÅÖµ
+g_best=min(value);%å…¨å±€æœ€ä¼˜å€¼
 picture_data(g)=g_best;
 value_1=value;
-Mf=zeros(1,Np);%Ëõ·ÅÒò×Ó£¨±äÒìÒò×Ó)ÀúÊ·¼ÇÒä
-Mcr=zeros(1,Np);% ½»²æÒò×ÓÀúÊ·¼ÇÒä
+Mf=zeros(1,Np);%ç¼©æ”¾å› å­ï¼ˆå˜å¼‚å› å­)å†å²è®°å¿†
+Mcr=zeros(1,Np);% äº¤å‰å› å­å†å²è®°å¿†
 Mf=Mf+0.5;
 Mcr=Mcr+0.5;
 while (efs<EFS && min_error>=power(10,-8))
@@ -72,25 +74,25 @@ while (efs<EFS && min_error>=power(10,-8))
         end
     end
     
-    Sf=zeros(1,Np);%Ôİ´æÃ¿´Îµü´úÖĞ½ÏºÃµÄËõ·ÅÒò×Ó
-    Scr=zeros(1,Np);%Ôİ´æÃ¿´Îµü´úÖĞ½ÏºÃµÄ½»²æÒò×Ó
-    dif_fitness=zeros(1,Np);%ÊÊÓ¦¶È²îÖµ
-    dif_fitness_sum=0;%ÊÊÓ¦¶È²îÖµÖ®ºÍ
-    dif_sum=0;%²îÖµ¸öÊı
-    [~,b]=sort(value,2);%ÅÅĞò
+    Sf=zeros(1,Np);%æš‚å­˜æ¯æ¬¡è¿­ä»£ä¸­è¾ƒå¥½çš„ç¼©æ”¾å› å­
+    Scr=zeros(1,Np);%æš‚å­˜æ¯æ¬¡è¿­ä»£ä¸­è¾ƒå¥½çš„äº¤å‰å› å­
+    dif_fitness=zeros(1,Np);%é€‚åº”åº¦å·®å€¼
+    dif_fitness_sum=0;%é€‚åº”åº¦å·®å€¼ä¹‹å’Œ
+    dif_sum=0;%å·®å€¼ä¸ªæ•°
+    [~,b]=sort(value,2);%æ’åº
     distance=round(((distance_min-distance_init)/EFS)*efs+distance_init);
     for i=1:Np
         
-        %%%%%%%%%%%%%%%%%%%%%%%%----±äÒì²Ù×÷----%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%----å˜å¼‚æ“ä½œ----%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         cri=randi(Np);
         fi=cri;
-        CRi=normrnd(Mcr(1,cri), 0.1);%ÕıÌ¬·Ö²¼
+        CRi=normrnd(Mcr(1,cri), 0.1);%æ­£æ€åˆ†å¸ƒ
         if(CRi>=1)
             CRi=1;
         elseif(CRi<=0)
             CRi=0;
         end
-        Fi= Mf(1,fi) + 0.1 * tan(pi * (rand - 0.5));%¿ÂÎ÷·Ö²¼
+        Fi= Mf(1,fi) + 0.1 * tan(pi * (rand - 0.5));%æŸ¯è¥¿åˆ†å¸ƒ
         while(Fi<=0)
             Fi= Mf(1,fi) + 0.1 * tan(pi * (rand - 0.5));
         end
@@ -99,9 +101,9 @@ while (efs<EFS && min_error>=power(10,-8))
         end
         
         ps=rand*(0.2-2/Np)+2/Np;
-        Pbest=b(randi(round(Np*ps)));%È¡½ÏºÃ½âµÄÇ°%psÖĞµÄÒ»¸ö½â
+        Pbest=b(randi(round(Np*ps)));%å–è¾ƒå¥½è§£çš„å‰%psä¸­çš„ä¸€ä¸ªè§£
          dx = randperm(Np);          
-         r1=dx(1);%ÁíÍâÁ½¸öÏòÁ¿
+         r1=dx(1);%å¦å¤–ä¸¤ä¸ªå‘é‡
          if r1 == i
             r1= dx(2);
          end
@@ -124,19 +126,19 @@ while (efs<EFS && min_error>=power(10,-8))
              par_distance=par_distance+power((pop(i,dj)-pop(Pbest,dj)),2);
          end
          par_distance=sqrt(par_distance);
-         temp_de=Fi*(pop(Pbest,:)-pop(i,:))+Fi*(pop(r1,:)-pop_1(r2g,:));%²î·ÖÏòÁ¿
+         temp_de=Fi*(pop(Pbest,:)-pop(i,:))+Fi*(pop(r1,:)-pop_1(r2g,:));%å·®åˆ†å‘é‡
          if par_distance<distance && par_distance>distance_min
              temp_de=-temp_de;
-             temp_d=randi(D);%Ëæ»úÑ¡È¡µÄÎ¬¶ÈÊı
-             rand_d=randperm(D);%Ëæ»úÑ¡È¡µÄÎ¬¶È
+             temp_d=randi(D);%éšæœºé€‰å–çš„ç»´åº¦æ•°
+             rand_d=randperm(D);%éšæœºé€‰å–çš„ç»´åº¦
              for d=1:temp_d
-                 temp_de(rand_d(d))=rand*(xmax-xmin)+xmin;%ÕÛÉä²Ù×÷
+                 temp_de(rand_d(d))=rand*(xmax-xmin)+xmin;%æŠ˜å°„æ“ä½œ
              end
          end
-         son=pop(i,:)+temp_de;%±äÒì
+         son=pop(i,:)+temp_de;%å˜å¼‚
          
          jrand=randi(D);
-         for j = 1: D%±ß½ç´¦Àí¡¢½»²æ²Ù×÷
+         for j = 1: D%è¾¹ç•Œå¤„ç†ã€äº¤å‰æ“ä½œ
             while(son(1,j)<xmin || son(1,j)>xmax)
                  if(son(1,j)<xmin)
                      son(1,j) =(pop(i,j)+xmin)/2;
@@ -151,7 +153,7 @@ while (efs<EFS && min_error>=power(10,-8))
                     pop_next_1(i,j)=pop(i,j);
                  end
          end
-          %%%%%%%%%%%%%%%%%%----Ñ¡Ôñ²Ù×÷---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+          %%%%%%%%%%%%%%%%%%----é€‰æ‹©æ“ä½œ---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
          old_fit=value_1(i);
          new_fit=f(pop_next_1(i,:));
          if old_fit<=new_fit
@@ -167,9 +169,9 @@ while (efs<EFS && min_error>=power(10,-8))
             else
                 A(randi(Np),:)=pop(i,:);
             end
-            Scr(1,dif_sum)=CRi;%½ÏºÃµÄ½»²æÒò×Ó
-            Sf(1,dif_sum)=Fi;%½ÏºÃµÄ±äÒìÒò×Ó
-            dif_fitness(1,dif_sum)=old_fit-new_fit;%ÊÊÓ¦¶È²îÖµ
+            Scr(1,dif_sum)=CRi;%è¾ƒå¥½çš„äº¤å‰å› å­
+            Sf(1,dif_sum)=Fi;%è¾ƒå¥½çš„å˜å¼‚å› å­
+            dif_fitness(1,dif_sum)=old_fit-new_fit;%é€‚åº”åº¦å·®å€¼
          end
          value_1(i) = value(i);
     end
@@ -177,7 +179,7 @@ while (efs<EFS && min_error>=power(10,-8))
     if temp_g_best<g_best
         g_best=temp_g_best;
     end
-    %¸üĞÂËõ·ÅÒò×ÓºÍ½»²æÂÊÀúÊ·¼ÇÒä
+    %æ›´æ–°ç¼©æ”¾å› å­å’Œäº¤å‰ç‡å†å²è®°å¿†
     if(dif_sum>0)
         dif_fitness_sum=sum(dif_fitness);
         Mcr(1,memory_pos)=0;
@@ -199,7 +201,7 @@ while (efs<EFS && min_error>=power(10,-8))
     Np_next=round((Np_min-Np_init)/EFS*efs+Np_init);
     if(Np_next<Np)
         while(Np>Np_next)
-            [~,max_index]=max(value);%ÅÅĞò
+            [~,max_index]=max(value);%æ’åº
             pop(max_index,:)=[];
             A(randi(Np),:)=[];
             value(:,max_index)=[];
