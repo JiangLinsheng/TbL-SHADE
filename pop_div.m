@@ -1,6 +1,8 @@
-%¼ÆËãÖÖÈºÃÜ¶È
+% Copyright (c) 2020, Linsheng Jiang
+% All rights reserved.
+%è®¡ç®—ç§ç¾¤å¯†åº¦
 function PD=pop_div(pop,Np,D)
-    xj=mean(pop,1);%Ã¿Ò»Î¬µÄÆ½¾ùÖµ
+    xj=mean(pop,1);%æ¯ä¸€ç»´çš„å¹³å‡å€¼
     for j=1:D
         pop(:,j)=pop(:,j)-xj(j);
     end
