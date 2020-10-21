@@ -18,12 +18,13 @@ A_pos=0;
 g=1;%the number of generation
 efs=0;%the number of the calculation of the fitness function
 min_error=1000;
-error_value_1=zeros(16,1,1);%Statistical experiment results
+error_value_1=zeros(16,1,1);%Experimental results required by CEC2020
 memory_pos=1;
 k=0;
 optimum=[100,1100,700,1900,1700,1600,2100,2200,2400,2500];%The optimal value of 10 test functions
-%the parameters of population diversity analysis
+%the result of population diversity analysis
 pop_anay=zeros(1,3,1);
+%the parameters of population diversity analysis
 epsilon=2;
 MinPts=4;
 function y = f(pos)
