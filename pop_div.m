@@ -1,8 +1,8 @@
 % Copyright (c) 2020, Linsheng Jiang
 % All rights reserved.
-%计算种群密度
+%Calculate population density
 function PD=pop_div(pop,Np,D)
-    xj=mean(pop,1);%每一维的平均值
+    xj=mean(pop,1);%the average value of each dimension
     for j=1:D
         pop(:,j)=pop(:,j)-xj(j);
     end
