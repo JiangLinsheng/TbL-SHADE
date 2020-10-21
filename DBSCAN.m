@@ -1,4 +1,4 @@
-%DBSCAN算法子函数，需另外创建.m文件保存
+%DBSCAN algorithm
 % Copyright (c) 2015, Yarpiz (www.yarpiz.com)
 % All rights reserved. Please read the "license.txt" for license terms.
 %
@@ -13,11 +13,11 @@ function [IDX, isnoise]=DBSCAN(X,epsilon,MinPts)
     C=0;
     n=size(X,1);
     IDX=zeros(n,1);
-%     D=pdist2(X,X);%各个节点之间的欧式距离
+%     D=pdist2(X,X);%Euclidean distance between nodes
     P=inf;
-    D=pdist2(X,X,'minkowski',P);%各个节点之间的切比雪夫距离
+    D=pdist2(X,X,'minkowski',P);%Chebyshev distance between nodes
     visited=false(n,1);
-    isnoise=false(n,1);%是否为噪声点（离群点）
+    isnoise=false(n,1);%Whether it is noise point (outlier)
     for i=1:n
         if ~visited(i)
             visited(i)=true;
